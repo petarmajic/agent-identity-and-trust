@@ -4,13 +4,16 @@ How can a messaging channel tell whether an AI agent really speaks for a brand w
 
 [Read the concept paper](docs/product-concept.pdf)
 
-## One agent, two conversations
+## Usage example
 
-A brand registers its support agent and links it to an approved messaging account. That tells the channel who the brand expects to use the account. When a conversation starts, the channel still needs to establish who is calling and whether the agent has permission to act there.
+A brand registers support agent **A-01** for its messaging account **M-01**. Suppose the agent starts a conversation to help a customer track an order. Its signed proof matches the registration and customer support is within its scope, so the channel lets the conversation through.
 
-I chose to check the agent’s signed proof against its current record at the start of each conversation. In the example below, agent **A-01** is active when it first contacts the channel through account **M-01**. After revocation, the next check reads the updated record and the channel blocks the conversation in this example. Both decisions stay attached to A-01, so a reviewer can follow what happened to the same agent.
+<picture>
+  <source media="(max-width: 600px)" srcset="assets/agent-lifecycle-mobile.svg">
+  <img src="assets/agent-lifecycle.svg" alt="Two proposed channel checks for agent A-01 on account M-01. The channel allows the first support conversation and blocks the next one after it reads the revoked status.">
+</picture>
 
-![Two proposed channel checks for agent A-01 on account M-01. The channel allows the first support conversation and blocks the next one after it reads the revoked status.](assets/agent-lifecycle.svg)
+I gave the agent a stable ID and designed the channel to check its authority again at the start of each conversation. If A-01 returns after its registration has been revoked, that check picks up the change and the channel blocks the new conversation. An operator reviewing A-01 can still trace both decisions in its history.
 
 ## Where verification stops
 

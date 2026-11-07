@@ -29,7 +29,7 @@ Consider a support conversation that turns into a refund request. Verification c
 
 ## Identity continuity and revocation
 
-The registry keeps the Agent ID after revocation so a reviewer can trace the earlier decision and the later block to the same agent. The audit history covers checks and lifecycle changes recorded by participating channels and the gateway. A block depends on a fresh check that reads the revoked status. Revocation delivery time and the handling of conversations already underway are open design questions. [Illustrated example](../README.md#one-agent-two-conversations).
+The registry keeps the Agent ID after revocation so a reviewer can trace the earlier decision and the later block to the same agent. The audit history covers checks and lifecycle changes recorded by participating channels and the gateway. A block depends on a fresh check that reads the revoked status. Revocation delivery time and the handling of conversations already underway are open design questions. [Usage example](../README.md#usage-example).
 
 ## First-version boundary
 
