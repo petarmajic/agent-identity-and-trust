@@ -19,6 +19,8 @@ The Agent ID stays the same when an agent changes its display name, account or s
 
 ![Proposed architecture. Registration links the agent to a principal, a channel binding and an authorisation grant. At conversation start, the Verification API checks those records before the channel applies its policy.](../assets/platform-overview.svg)
 
+**Figure 1.** The Verification API checks the agent’s identity and permissions. The channel uses the result to allow or block the conversation.
+
 ## Runtime verification
 
 1. **Authenticate the caller.** The agent presents a short-lived signed proof. The Verification API checks it against the registered public key and credential for that Agent ID.
