@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assignment — Agent Identity & Trust | Fundamentals of PM</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #141414;
+    --accent: #e8ff57;
+    --accent2: #57c8ff;
+    --accent3: #ff7b57;
+    --accent4: #b57bff;
+    --green: #57ffa0;
+    --text: #f0f0f0;
+    --muted: #888;
+    --border: #2e2e2e;
+    --border2: #222;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; }
+
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 40px 100px; }
+
+  /* ─── Cover ─── */
+  .cover { background: linear-gradient(160deg,#0f0f0f 0%,#141414 60%,#0f0f18 100%); border-bottom: 1px solid var(--border); padding: 72px 40px 64px; }
+  .cover .inner { max-width: 900px; margin: 0 auto; }
+  .eyebrow { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
+  .cover h1 { font-size: clamp(30px, 4.5vw, 58px); font-weight: 900; line-height: 1.05; margin-bottom: 10px; }
+  .cover h1 span { color: var(--accent); }
+  .cover .sub { font-size: clamp(15px, 2vw, 20px); font-weight: 700; color: var(--muted); margin-bottom: 32px; }
+  .cover-meta { display: flex; gap: 28px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+  .cover-meta strong { color: var(--text); }
+
+  /* ─── Typography ─── */
+  h2 { font-size: clamp(20px, 2.8vw, 32px); font-weight: 800; line-height: 1.1; }
+  h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+  p { font-size: 14px; color: #bbb; line-height: 1.7; margin-bottom: 10px; }
+  p:last-child { margin-bottom: 0; }
+
+  .section { margin-top: 56px; }
+  .label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; font-weight: 800; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 56px 0 0; }
+
+  /* ─── Phase header ─── */
+  .phase-header { display: flex; align-items: flex-start; gap: 20px; padding: 32px 0 18px; border-top: 1px solid var(--border); margin-top: 56px; }
+  .phase-header .ph-num { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 800; padding-top: 6px; white-space: nowrap; }
+  .phase-header h2 { font-size: clamp(22px, 3vw, 38px); }
+  .phase-header .ph-desc { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+  /* ─── Today's identity grid ─── */
+  .identity-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 20px 0; }
+  .id-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 12px; text-align: center; }
+  .id-card .idc-icon { font-size: 20px; margin-bottom: 8px; }
+  .id-card .idc-name { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .id-card .idc-identifies { font-size: 10px; color: var(--muted); line-height: 1.4; margin-bottom: 6px; }
+  .id-card .idc-channel { font-size: 10px; color: #555; font-style: italic; line-height: 1.4; }
+
+  /* ─── Agentic shift ─── */
+  .shift-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 16px 0; }
+  .shift-card { background: rgba(232,255,87,0.03); border: 1px solid rgba(232,255,87,0.1); border-radius: 10px; padding: 14px 12px; text-align: center; }
+  .shift-card .sc-icon { font-size: 20px; margin-bottom: 8px; }
+  .shift-card .sc-name { font-size: 12px; font-weight: 700; color: #ccc; margin-bottom: 4px; }
+  .shift-card .sc-type { font-size: 10px; color: #666; margin-bottom: 8px; }
+  .shift-card .sc-gap { font-size: 11px; color: var(--accent3); font-weight: 700; background: rgba(255,123,87,0.08); border-radius: 4px; padding: 3px 6px; }
+
+  .gap-bar { background: rgba(255,123,87,0.06); border: 1px solid rgba(255,123,87,0.2); border-radius: 10px; padding: 14px 20px; margin: 16px 0; display: flex; align-items: center; gap: 14px; font-size: 13px; color: #aaa; }
+  .gap-bar .gb-icon { font-size: 20px; flex-shrink: 0; }
+  .gap-bar strong { color: var(--accent3); }
+
+  /* ─── Stakeholder table ─── */
+  .stk-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .stk-table th { padding: 9px 14px; text-align: left; background: var(--surface); color: var(--muted); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .stk-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; color: #bbb; }
+  .stk-table tr:last-child td { border-bottom: none; }
+
+  /* ════════════════════════════════════════
+     REFERENCE ARCHITECTURE
+  ════════════════════════════════════════ */
+  .arch-diagram { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin: 24px 0; background: #111; }
+
+  .arch-owners { display: flex; gap: 8px; padding: 14px 24px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); flex-wrap: wrap; align-items: center; }
+  .arch-owner-node { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; }
+  .arch-owner-node .aon-icon { font-size: 14px; }
+  .arch-owner-node .aon-label { font-size: 12px; font-weight: 700; }
+  .arch-owner-node .aon-sub { font-size: 10px; color: var(--muted); }
+  .arch-owners-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #444; margin-right: 6px; font-weight: 800; flex-shrink: 0; }
+
+  .arch-connector-v { display: flex; justify-content: center; align-items: center; padding: 4px 0; color: #333; font-size: 13px; letter-spacing: 2px; }
+
+  .arch-platform { padding: 16px 24px 20px; border-bottom: 1px solid var(--border); }
+  .arch-platform-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; font-weight: 800; color: rgba(232,255,87,0.4); margin-bottom: 14px; }
+
+  .arch-core-zone { background: rgba(232,255,87,0.03); border: 1px solid rgba(232,255,87,0.12); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .arch-zone-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; font-weight: 800; color: var(--accent); opacity: 0.6; margin-bottom: 10px; }
+
+  .arch-registry-row { background: rgba(232,255,87,0.05); border: 1px solid rgba(232,255,87,0.15); border-radius: 8px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .arch-registry-row .arr-label { font-size: 12px; font-weight: 800; color: var(--accent); margin-right: 6px; }
+  .arch-field { font-size: 10px; color: rgba(232,255,87,0.5); background: rgba(232,255,87,0.06); border: 1px solid rgba(232,255,87,0.12); border-radius: 4px; padding: 3px 8px; }
+
+  .arch-services-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .arch-svc { border-radius: 8px; padding: 10px 12px; text-align: center; font-size: 11px; font-weight: 700; border: 1px solid; }
+  .arch-svc .asvc-sub { font-size: 10px; font-weight: 400; margin-top: 3px; line-height: 1.3; }
+
+  .arch-api-row { display: flex; gap: 8px; padding-top: 10px; }
+  .arch-api-box { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 9px 14px; font-size: 11px; font-weight: 700; text-align: center; color: #888; }
+  .arch-api-box .aab-sub { font-size: 10px; font-weight: 400; color: #555; margin-top: 2px; }
+
+  .arch-channels { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 12px 24px; background: rgba(0,0,0,0.3); }
+  .arch-ch-box { background: var(--surface2); border: 1px dashed #252525; border-radius: 8px; padding: 9px 10px; text-align: center; font-size: 11px; color: #555; line-height: 1.4; }
+  .arch-ch-box strong { display: block; color: #666; margin-bottom: 1px; }
+
+  /* ════════════════════════════════════════
+     ASSIGNMENT MAP
+  ════════════════════════════════════════ */
+  .assign-map { margin: 24px 0; display: flex; flex-direction: column; gap: 6px; }
+  .assign-phase { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+  .assign-phase-hd { padding: 9px 18px; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; font-weight: 800; }
+  .assign-sections { display: flex; align-items: center; gap: 6px; padding: 12px 18px; flex-wrap: wrap; }
+  .assign-sec { border-radius: 7px; padding: 8px 14px; font-size: 12px; font-weight: 700; text-align: center; border: 1px solid; white-space: nowrap; }
+  .assign-arrow { color: #444; font-size: 14px; flex-shrink: 0; }
+  .assign-connector { display: flex; justify-content: center; padding: 4px 0; color: #444; font-size: 14px; }
+
+  /* ════════════════════════════════════════
+     ASSIGNMENT BLOCKS
+  ════════════════════════════════════════ */
+  .ab { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-top: 20px; }
+  .ab-head { display: flex; align-items: baseline; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+  .ab-num { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 800; white-space: nowrap; }
+  .ab-title { font-size: 19px; font-weight: 800; }
+  .ab-body { padding: 20px 24px; }
+  .ab-body p { font-size: 13px; color: #aaa; }
+  .len-tag { display: inline-block; margin-top: 14px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); background: #1e1e1e; border: 1px solid var(--border); border-radius: 20px; padding: 3px 12px; }
+
+  .deliv { background: #131313; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 18px; margin-top: 16px; }
+  .deliv.blue { border-left-color: var(--accent2); }
+  .deliv.purple { border-left-color: var(--accent4); }
+  .deliv.orange { border-left-color: var(--accent3); }
+  .deliv .dl-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; font-weight: 800; color: var(--accent); margin-bottom: 9px; }
+  .deliv.blue .dl-label { color: var(--accent2); }
+  .deliv.purple .dl-label { color: var(--accent4); }
+  .deliv.orange .dl-label { color: var(--accent3); }
+  .deliv ul, .deliv ol { padding-left: 18px; font-size: 13px; color: #ccc; line-height: 1.9; }
+  .deliv p { font-size: 13px; color: #ccc; }
+
+  .callout { padding: 12px 18px; background: var(--surface); border-left: 3px solid var(--border); border-radius: 0 8px 8px 0; font-size: 13px; color: #777; line-height: 1.6; margin-top: 12px; }
+  .callout.y { border-left-color: rgba(232,255,87,0.4); color: #aaa; }
+  .callout.b { border-left-color: rgba(87,200,255,0.4); color: #aaa; }
+  .callout.o { border-left-color: rgba(255,123,87,0.4); color: #aaa; }
+
+  .ex-pair { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+  .ex { padding: 12px 16px; border-radius: 8px; font-size: 13px; line-height: 1.6; }
+  .ex .ex-lbl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; margin-bottom: 5px; }
+  .ex.weak { background: rgba(255,123,87,0.05); border: 1px solid rgba(255,123,87,0.12); }
+  .ex.weak .ex-lbl { color: var(--accent3); }
+  .ex.weak p { color: #777; margin: 0; }
+  .ex.strong { background: rgba(232,255,87,0.04); border: 1px solid rgba(232,255,87,0.12); }
+  .ex.strong .ex-lbl { color: var(--accent); }
+  .ex.strong p { color: #ccc; margin: 0; }
+
+  .tmpl { background: rgba(87,200,255,0.04); border: 1px solid rgba(87,200,255,0.18); border-radius: 8px; padding: 16px 20px; margin-top: 14px; font-size: 14px; color: #bbb; line-height: 2.1; }
+  .tmpl .tl { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent2); font-weight: 800; margin-bottom: 10px; }
+  .tmpl .fill { color: var(--accent2); font-weight: 700; }
+
+  /* ════════════════════════════════════════
+     COMPONENT SCHEMAS
+  ════════════════════════════════════════ */
+  .schema { margin: 16px 0 4px; }
+  .schema-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #555; font-weight: 800; margin-bottom: 10px; }
+
+  .schema-flow { display: flex; align-items: stretch; gap: 5px; flex-wrap: wrap; }
+  .sf-node { background: #161616; border: 1px solid #252525; border-radius: 7px; padding: 9px 13px; flex: 1; min-width: 90px; }
+  .sf-node .sfn-lbl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; color: #555; margin-bottom: 4px; }
+  .sf-node .sfn-val { font-size: 11px; color: #888; line-height: 1.4; }
+  .sf-arr { display: flex; align-items: center; color: #333; font-size: 14px; flex-shrink: 0; padding: 0 1px; }
+  .sf-result { background: rgba(232,255,87,0.04); border: 1px solid rgba(232,255,87,0.12); }
+  .sf-result .sfn-lbl { color: rgba(232,255,87,0.4); }
+  .sf-result .sfn-val { color: #aaa; }
+
+  .schema-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+  .sg-node { background: #161616; border: 1px solid #252525; border-radius: 7px; padding: 12px 14px; }
+  .sg-node .sgn-lbl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; margin-bottom: 5px; }
+  .sg-node .sgn-desc { font-size: 11px; color: #777; line-height: 1.5; }
+
+  .schema-roadmap { display: flex; align-items: stretch; gap: 5px; }
+  .sr-node { background: #161616; border: 1px solid #252525; border-radius: 7px; padding: 10px 14px; flex: 1; }
+  .sr-node .srn-horizon { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; margin-bottom: 3px; }
+  .sr-node .srn-time { font-size: 10px; color: #555; margin-bottom: 6px; }
+  .sr-node .srn-desc { font-size: 11px; color: #777; line-height: 1.4; }
+  .sr-arr { display: flex; align-items: center; color: #333; font-size: 14px; flex-shrink: 0; }
+
+  .schema-sources { display: flex; flex-direction: column; gap: 6px; }
+  .ss-row { display: flex; align-items: stretch; gap: 5px; }
+  .ss-num { background: #161616; border: 1px solid #252525; border-radius: 7px 0 0 7px; padding: 8px 12px; font-size: 10px; font-weight: 800; color: #555; display: flex; align-items: center; min-width: 36px; justify-content: center; flex-shrink: 0; }
+  .ss-parts { flex: 1; display: flex; gap: 5px; }
+  .ss-part { background: #161616; border: 1px solid #252525; border-radius: 0 7px 7px 0; padding: 8px 12px; flex: 1; font-size: 11px; color: #777; }
+  .ss-part:not(:first-child) { border-radius: 7px; }
+  .ss-part .sp-lbl { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; font-weight: 800; color: #444; margin-bottom: 3px; }
+
+  /* ─── Identity canvas (2.4) ─── */
+  .id-canvas { border: 1px dashed #2a2a2a; border-radius: 10px; padding: 22px; margin-top: 14px; background: #111; }
+  .idc-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .idc-box { border: 1px dashed #333; border-radius: 7px; padding: 9px 14px; font-size: 12px; text-align: center; flex: 1; }
+  .idc-box.filled { border-color: #2e2e2e; background: var(--surface); font-weight: 700; color: #aaa; }
+  .idc-box.empty { border-color: #252525; color: #444; font-style: italic; font-size: 11px; }
+  .idc-box.pm-zone { border-color: rgba(232,255,87,0.2); background: rgba(232,255,87,0.03); }
+  .idc-conn { display: flex; justify-content: center; align-items: center; height: 20px; color: #333; font-size: 14px; }
+  .idc-svc-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin: 4px 0; }
+  .idc-svc { border: 1px dashed #2a2a2a; border-radius: 7px; padding: 8px 10px; text-align: center; font-size: 11px; color: #555; }
+  .idc-svc.chosen { border-color: rgba(232,255,87,0.3); color: rgba(232,255,87,0.6); background: rgba(232,255,87,0.03); }
+  .idc-ch-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 4px 0; }
+  .idc-ch { border: 1px dashed #252525; border-radius: 6px; padding: 7px 8px; text-align: center; font-size: 10px; color: #444; }
+  .idc-caption { font-size: 11px; color: #444; text-align: center; margin-top: 10px; line-height: 1.5; }
+
+  /* ─── Submission tiles ─── */
+  .sub-tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; margin-bottom: 12px; }
+  .sub-tile { background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 14px 16px; }
+  .sub-tile .st-lbl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .sub-tile .st-val { font-size: 14px; font-weight: 700; }
+
+  /* ─── Quick ref table ─── */
+  .ref-table { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 13px; }
+  .ref-table th { padding: 9px 14px; text-align: left; background: var(--surface); color: var(--muted); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .ref-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; color: #bbb; }
+  .ref-table tr:last-child td { border-bottom: none; }
+
+  /* ─── Footer ─── */
+  .footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: #444; display: flex; gap: 24px; flex-wrap: wrap; }
+
+  @media (max-width: 680px) {
+    .wrap { padding: 0 18px 80px; }
+    .cover { padding: 44px 18px 52px; }
+    .identity-grid, .shift-grid, .arch-services-row, .arch-channels, .idc-svc-row, .idc-ch-row { grid-template-columns: repeat(2, 1fr); }
+    .schema-flow, .schema-roadmap { flex-direction: column; }
+    .sr-arr, .sf-arr { transform: rotate(90deg); align-self: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ COVER ══════════ -->
+<div class="cover">
+  <div class="inner">
+    <div class="eyebrow">Fundamentals of Product Management · FER Zagreb · 2026</div>
+    <h1>Agent Identity<br><span>&amp; Trust</span></h1>
+    <div class="sub">Product Discovery &amp; Definition Assignment</div>
+    <div class="cover-meta">
+      <span><strong>Submission</strong> Individual</span>
+      <span><strong>Length</strong> 6–8 pages</span>
+      <span><strong>Estimated effort</strong> 5–7 hours</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ══════════ OVERVIEW ══════════ -->
+<div class="section">
+  <div class="label">About this assignment</div>
+  <p>This assignment follows the two-phase PM workflow from the course: <strong style="color:var(--text)">Discovery</strong> — understand the problem — and <strong style="color:var(--text)">Definition</strong> — shape the solution. Each section is self-contained. Work through them in order.</p>
+  <p>The topic is a <strong style="color:var(--text)">new product concept</strong>: an identity and trust system for AI agents. Today, brands, users, and machines are identified by phone numbers, email addresses, domains, and IP addresses. Tomorrow, AI agents acting on behalf of brands and individuals will need their own identity layer — and no such standard exists yet. Your job is to define what that product looks like.</p>
+</div>
+
+<!-- ══════════ CONTEXT ══════════ -->
+<div class="section">
+  <div class="label">Background</div>
+  <h3 style="font-size:20px;margin-bottom:10px;">Today's Identity Landscape</h3>
+  <p>Every digital actor today is identified by a structured identifier that carries trust, ownership, and channel context. These identifiers are managed, validated, and regulated — they are the foundation of digital communication.</p>
+
+  <div class="identity-grid">
+    <div class="id-card" style="border-top:2px solid var(--accent)">
+      <div class="idc-icon">📞</div>
+      <div class="idc-name">Phone Number</div>
+      <div class="idc-identifies">Brands · Individuals</div>
+      <div class="idc-channel">SMS · Voice · WhatsApp</div>
+    </div>
+    <div class="id-card" style="border-top:2px solid var(--accent2)">
+      <div class="idc-icon">✉️</div>
+      <div class="idc-name">Email Address</div>
+      <div class="idc-identifies">Brands · Individuals</div>
+      <div class="idc-channel">Transactional · Marketing</div>
+    </div>
+    <div class="id-card" style="border-top:2px solid var(--accent4)">
+      <div class="idc-icon">🌐</div>
+      <div class="idc-name">Web Domain</div>
+      <div class="idc-identifies">Brands</div>
+      <div class="idc-channel">Websites · Web apps</div>
+    </div>
+    <div class="id-card" style="border-top:2px solid var(--accent3)">
+      <div class="idc-icon">🖥️</div>
+      <div class="idc-name">IP Address</div>
+      <div class="idc-identifies">Machines · IoT</div>
+      <div class="idc-channel">APIs · Servers · Devices</div>
+    </div>
+    <div class="id-card" style="border-top:2px solid var(--green)">
+      <div class="idc-icon">👤</div>
+      <div class="idc-name">Username</div>
+      <div class="idc-identifies">Brands · Individuals</div>
+      <div class="idc-channel">Social · SaaS · Apps</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:18px;margin:28px 0 10px;">The Agentic Shift</h3>
+  <p>AI agents are now appearing across every channel — embedded in websites, operating inside WhatsApp, answering phone calls, and running autonomously in APIs. Both brands and individuals are deploying agents. But none of them have a standard identity. There is no equivalent of a phone number or domain for an agent.</p>
+
+  <div class="shift-grid">
+    <div class="shift-card">
+      <div class="sc-icon">💬</div>
+      <div class="sc-name">Chat App Agent</div>
+      <div class="sc-type">Brand · on WhatsApp, Viber…</div>
+      <div class="sc-gap">no identity</div>
+    </div>
+    <div class="shift-card">
+      <div class="sc-icon">🌐</div>
+      <div class="sc-name">Web Agent</div>
+      <div class="sc-type">Brand · embedded in site</div>
+      <div class="sc-gap">no identity</div>
+    </div>
+    <div class="shift-card">
+      <div class="sc-icon">🔊</div>
+      <div class="sc-name">Voice Agent</div>
+      <div class="sc-type">Brand · inbound / outbound</div>
+      <div class="sc-gap">no identity</div>
+    </div>
+    <div class="shift-card">
+      <div class="sc-icon">🤖</div>
+      <div class="sc-name">Personal Agent</div>
+      <div class="sc-type">Individual · acts on your behalf</div>
+      <div class="sc-gap">no identity</div>
+    </div>
+    <div class="shift-card">
+      <div class="sc-icon">⚙️</div>
+      <div class="sc-name">Autonomous Agent</div>
+      <div class="sc-type">Machine · API / IoT / pipeline</div>
+      <div class="sc-gap">no identity</div>
+    </div>
+  </div>
+
+  <div class="gap-bar">
+    <div class="gb-icon">⚠️</div>
+    <div><strong>The gap:</strong> when an agent contacts you on WhatsApp, calls you, or acts on your behalf — there is currently no way to verify who it is, who controls it, whether it is legitimate, or whether it has been compromised. Identity solves this.</div>
+  </div>
+
+  <h3 style="font-size:18px;margin:28px 0 10px;">The Stakeholders</h3>
+  <p>Agent identity affects every participant in a communication — not just the deploying brand. Each stakeholder has a different relationship to the identity problem.</p>
+
+  <table class="stk-table">
+    <thead><tr><th>Stakeholder</th><th>Who they are</th><th>What they need from agent identity</th></tr></thead>
+    <tbody>
+      <tr><td><strong style="color:var(--accent)">Brand / Enterprise</strong></td><td>Company deploying agents to interact with customers</td><td>Proof that their agents cannot be impersonated. Ability to register, manage, and revoke agent identities.</td></tr>
+      <tr><td><strong style="color:var(--accent2)">End User / Recipient</strong></td><td>Person interacting with an agent</td><td>Trust signal: "Is this really the Infobip Bank agent?" Ability to verify and report suspicious agents.</td></tr>
+      <tr><td><strong style="color:var(--accent4)">Individual / Personal Agent owner</strong></td><td>Person deploying a personal AI agent</td><td>A portable identity that their agent carries across channels and interactions.</td></tr>
+      <tr><td><strong style="color:var(--accent3)">Channel Operator</strong></td><td>WhatsApp, Viber, telecom, website platform</td><td>Ability to filter unregistered or malicious agents before they reach users.</td></tr>
+      <tr><td><strong style="color:var(--green)">Developer / Builder</strong></td><td>Engineer building and deploying an agent</td><td>APIs to register, authenticate, and manage agent identity programmatically.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════ REFERENCE ARCHITECTURE ══════════ -->
+<div class="section">
+  <div class="label">Product Concept</div>
+  <h3 style="font-size:20px;margin-bottom:10px;">Reference Architecture — Agent Identity Platform</h3>
+  <p>The diagram below shows the conceptual components of an Agent Identity Platform. This is a reference — not a specification. Use it as context when you research and when you design your own architectural schema in Section 2.4.</p>
+
+  <div class="arch-diagram">
+
+    <!-- Owners -->
+    <div class="arch-owners">
+      <div class="arch-owners-label">Owners</div>
+      <div class="arch-owner-node"><div class="aon-icon">🏢</div><div><div class="aon-label">Brand / Enterprise</div><div class="aon-sub">registers brand agents</div></div></div>
+      <div class="arch-owner-node"><div class="aon-icon">👤</div><div><div class="aon-label">Individual</div><div class="aon-sub">registers personal agents</div></div></div>
+      <div class="arch-owner-node"><div class="aon-icon">⚙️</div><div><div class="aon-label">Machine / System</div><div class="aon-sub">registers autonomous agents</div></div></div>
+    </div>
+
+    <div class="arch-connector-v">↓ register &amp; manage</div>
+
+    <!-- Platform -->
+    <div class="arch-platform">
+      <div class="arch-platform-label">⬡ Agent Identity Platform — PM design zone</div>
+
+      <div class="arch-core-zone">
+        <div class="arch-zone-label">Core Registry</div>
+        <div class="arch-registry-row">
+          <span class="arr-label">Agent Identity Record</span>
+          <span class="arch-field">Agent ID</span>
+          <span class="arch-field">Owner</span>
+          <span class="arch-field">Channel(s)</span>
+          <span class="arch-field">Status</span>
+          <span class="arch-field">Trust Level</span>
+          <span class="arch-field">Capabilities</span>
+          <span class="arch-field">Issued / Revoked</span>
+        </div>
+
+        <div class="arch-services-row">
+          <div class="arch-svc" style="color:var(--accent);border-color:rgba(232,255,87,0.2);background:rgba(232,255,87,0.04)">
+            Registration &amp; Onboarding
+            <div class="asvc-sub" style="color:rgba(232,255,87,0.4)">apply · verify owner · issue ID</div>
+          </div>
+          <div class="arch-svc" style="color:var(--accent2);border-color:rgba(87,200,255,0.2);background:rgba(87,200,255,0.04)">
+            Authentication Service
+            <div class="asvc-sub" style="color:rgba(87,200,255,0.4)">prove identity at runtime</div>
+          </div>
+          <div class="arch-svc" style="color:var(--accent4);border-color:rgba(181,123,255,0.2);background:rgba(181,123,255,0.04)">
+            Validation Engine
+            <div class="asvc-sub" style="color:rgba(181,123,255,0.4)">score trust · flag anomalies</div>
+          </div>
+          <div class="arch-svc" style="color:var(--accent3);border-color:rgba(255,123,87,0.2);background:rgba(255,123,87,0.04)">
+            Threat Detection
+            <div class="asvc-sub" style="color:rgba(255,123,87,0.4)">spam · bots · impersonation</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-api-row">
+        <div class="arch-api-box">Developer API / SDK<div class="aab-sub">register · authenticate · query · revoke</div></div>
+        <div class="arch-api-box">Admin Console<div class="aab-sub">manage identities · review flags · audit</div></div>
+        <div class="arch-api-box">Lookup / Verification API<div class="aab-sub">channel operators query agent status</div></div>
+      </div>
+    </div>
+
+    <div class="arch-connector-v">↓ identity presented to</div>
+
+    <!-- Channels -->
+    <div class="arch-channels">
+      <div class="arch-ch-box"><strong>Chat Apps</strong>WhatsApp, Viber…</div>
+      <div class="arch-ch-box"><strong>Web</strong>websites, web apps</div>
+      <div class="arch-ch-box"><strong>Voice</strong>phone, IVR</div>
+      <div class="arch-ch-box"><strong>Email</strong>A2P, transactional</div>
+      <div class="arch-ch-box"><strong>APIs</strong>M2M, IoT, pipelines</div>
+    </div>
+
+  </div>
+  <p style="font-size:11px;color:#555;margin-top:8px">The platform layer is what you are defining in this assignment. Channel integrations and owner-facing tooling are the boundary — not the focus.</p>
+</div>
+
+<!-- ══════════ ASSIGNMENT MAP ══════════ -->
+<div class="section">
+  <div class="label">Structure</div>
+  <h3 style="font-size:20px;margin-bottom:10px;">Assignment Map</h3>
+
+  <div class="assign-map">
+    <div class="assign-phase" style="border-color:rgba(232,255,87,0.2)">
+      <div class="assign-phase-hd" style="background:rgba(232,255,87,0.05);color:var(--accent)">Phase 1 — Discovery</div>
+      <div class="assign-sections">
+        <div class="assign-sec" style="color:var(--accent);border-color:rgba(232,255,87,0.25);background:rgba(232,255,87,0.04)">1.1<br><span style="font-weight:400;font-size:10px">Context Research</span></div>
+        <div class="assign-arrow">→</div>
+        <div class="assign-sec" style="color:var(--accent);border-color:rgba(232,255,87,0.25);background:rgba(232,255,87,0.04)">1.2<br><span style="font-weight:400;font-size:10px">Stakeholder Insight</span></div>
+        <div class="assign-arrow">→</div>
+        <div class="assign-sec" style="color:var(--accent);border-color:rgba(232,255,87,0.25);background:rgba(232,255,87,0.04)">1.3<br><span style="font-weight:400;font-size:10px">Problem Statement</span></div>
+      </div>
+    </div>
+
+    <div class="assign-connector">↓</div>
+
+    <div class="assign-phase" style="border-color:rgba(87,200,255,0.2)">
+      <div class="assign-phase-hd" style="background:rgba(87,200,255,0.05);color:var(--accent2)">Phase 2 — Definition</div>
+      <div class="assign-sections">
+        <div class="assign-sec" style="color:var(--accent2);border-color:rgba(87,200,255,0.2);background:rgba(87,200,255,0.04)">2.1<br><span style="font-weight:400;font-size:10px">Key Insights</span></div>
+        <div class="assign-arrow">→</div>
+        <div class="assign-sec" style="color:var(--accent2);border-color:rgba(87,200,255,0.2);background:rgba(87,200,255,0.04)">2.2<br><span style="font-weight:400;font-size:10px">Value Proposition</span></div>
+        <div class="assign-arrow">→</div>
+        <div class="assign-sec" style="color:var(--accent2);border-color:rgba(87,200,255,0.2);background:rgba(87,200,255,0.04)">2.3<br><span style="font-weight:400;font-size:10px">Product Definition</span></div>
+        <div class="assign-arrow">→</div>
+        <div class="assign-sec" style="color:var(--accent2);border-color:rgba(87,200,255,0.2);background:rgba(87,200,255,0.04)">2.4<br><span style="font-weight:400;font-size:10px">Architecture Schema</span></div>
+        <div class="assign-arrow">→</div>
+        <div class="assign-sec" style="color:var(--accent2);border-color:rgba(87,200,255,0.2);background:rgba(87,200,255,0.04)">2.5<br><span style="font-weight:400;font-size:10px">Roadmap</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PHASE 1 ══════════ -->
+<div class="phase-header">
+  <div>
+    <div class="ph-num" style="color:var(--accent)">Phase 1</div>
+    <h2>Discovery</h2>
+    <div class="ph-desc">Understand the identity problem well enough to state it precisely. No solutions yet.</div>
+  </div>
+</div>
+
+<!-- 1.1 -->
+<div class="ab">
+  <div class="ab-head">
+    <div class="ab-num" style="color:var(--accent)">1.1</div>
+    <div class="ab-title">Context Research</div>
+  </div>
+  <div class="ab-body">
+    <p>Find <strong style="color:var(--text)">2–3 sources</strong> relevant to agent identity, digital trust, or the emerging agentic communication landscape. Good sources include: industry reports on AI agent proliferation, articles on digital identity standards (DIDs, verifiable credentials), practitioner posts on bot fraud or sender reputation, or case studies of existing identity registries (BIMI for email, verified sender programs for SMS).</p>
+
+    <div class="schema">
+      <div class="schema-label">Section schema — repeat for each source</div>
+      <div class="schema-sources">
+        <div class="ss-row">
+          <div class="ss-num">S1</div>
+          <div class="ss-parts">
+            <div class="ss-part"><div class="sp-lbl">What it is</div>source type · topic · date</div>
+            <div class="ss-part"><div class="sp-lbl">What you found</div>key observation, specific</div>
+            <div class="ss-part"><div class="sp-lbl">Implication</div>what this means for agent identity as a product</div>
+          </div>
+        </div>
+        <div class="ss-row">
+          <div class="ss-num" style="color:#444">S2</div>
+          <div class="ss-parts">
+            <div class="ss-part" style="color:#444"><div class="sp-lbl">What it is</div>—</div>
+            <div class="ss-part" style="color:#444"><div class="sp-lbl">What you found</div>—</div>
+            <div class="ss-part" style="color:#444"><div class="sp-lbl">Implication</div>—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout y">Useful parallel: how did phone number reputation systems (Hiya, First Orion) or email sender verification (DMARC, BIMI) evolve? The same trust dynamics are arriving for agents.</div>
+    <span class="len-tag">~1 page</span>
+  </div>
+</div>
+
+<!-- 1.2 -->
+<div class="ab">
+  <div class="ab-head">
+    <div class="ab-num" style="color:var(--accent)">1.2</div>
+    <div class="ab-title">Stakeholder Insight</div>
+  </div>
+  <div class="ab-body">
+    <p>Find <strong style="color:var(--text)">one real voice</strong> from any of the five stakeholder groups — a quote from a forum, article, product review, podcast, or a conversation you conduct yourself. It should reveal something specific about how a stakeholder experiences the absence of agent identity today, or what they need from a future system.</p>
+
+    <div class="schema">
+      <div class="schema-label">Section schema</div>
+      <div class="schema-flow">
+        <div class="sf-node"><div class="sfn-lbl">Quote</div><div class="sfn-val">exact words or close paraphrase with source</div></div>
+        <div class="sf-arr">→</div>
+        <div class="sf-node"><div class="sfn-lbl">Stakeholder</div><div class="sfn-val">which of the 5 groups · role · context</div></div>
+        <div class="sf-arr">→</div>
+        <div class="sf-node sf-result"><div class="sfn-lbl">What it reveals</div><div class="sfn-val">the non-obvious finding about trust or identity needs</div></div>
+      </div>
+    </div>
+
+    <div class="callout y">The most useful insights often come from people who have experienced the failure — a user deceived by a fake brand agent, a developer who had to build identity logic from scratch, or a channel operator dealing with agent spam.</div>
+    <span class="len-tag">~half a page</span>
+  </div>
+</div>
+
+<!-- 1.3 -->
+<div class="ab">
+  <div class="ab-head">
+    <div class="ab-num" style="color:var(--accent)">1.3</div>
+    <div class="ab-title">Problem Statement</div>
+  </div>
+  <div class="ab-body">
+    <p>Write <strong style="color:var(--text)">one problem statement</strong> for the identity failure you consider most important to solve first. Focus on a specific failure mode — not the entire identity gap.</p>
+
+    <div class="schema">
+      <div class="schema-label">Section schema</div>
+      <div class="schema-flow">
+        <div class="sf-node"><div class="sfn-lbl">User</div><div class="sfn-val">who has this problem most acutely</div></div>
+        <div class="sf-arr">+</div>
+        <div class="sf-node"><div class="sfn-lbl">Goal</div><div class="sfn-val">what they're trying to do</div></div>
+        <div class="sf-arr">+</div>
+        <div class="sf-node"><div class="sfn-lbl">Specific failure</div><div class="sfn-val">the precise thing that breaks</div></div>
+        <div class="sf-arr">+</div>
+        <div class="sf-node"><div class="sfn-lbl">Root cause</div><div class="sfn-val">why it happens</div></div>
+        <div class="sf-arr">→</div>
+        <div class="sf-node sf-result"><div class="sfn-lbl">Consequence</div><div class="sfn-val">impact on user or business</div></div>
+      </div>
+    </div>
+
+    <div class="tmpl" style="margin-top:14px">
+      <div class="tl">Fill-in template</div>
+      <span class="fill">[User]</span> trying to <span class="fill">[accomplish goal]</span> struggles with <span class="fill">[specific failure]</span> because <span class="fill">[root cause]</span>. This results in <span class="fill">[consequence]</span>.
+    </div>
+
+    <div class="deliv" style="margin-top:14px">
+      <div class="dl-label">Also answer</div>
+      <ol>
+        <li>Which platform component from the reference architecture — Registration, Authentication, Validation, or Threat Detection — is most directly relevant to this problem, and why?</li>
+        <li>What assumption in your statement would most change the product direction if it turned out to be wrong?</li>
+      </ol>
+    </div>
+
+    <div class="callout y">"Agents are not identified" is not a problem statement — it is the domain. What specifically fails, for whom, when, and with what consequence? There are at least five different valid problem statements hidden in this space.</div>
+    <span class="len-tag">~half a page</span>
+  </div>
+</div>
+
+<!-- ══════════ PHASE 2 ══════════ -->
+<div class="phase-header">
+  <div>
+    <div class="ph-num" style="color:var(--accent2)">Phase 2</div>
+    <h2>Definition</h2>
+    <div class="ph-desc">Translate your research into a product concept — what it is, who it's for, how it's structured, and how you build it.</div>
+  </div>
+</div>
+
+<!-- 2.1 -->
+<div class="ab">
+  <div class="ab-head">
+    <div class="ab-num" style="color:var(--accent2)">2.1</div>
+    <div class="ab-title">Key Insights</div>
+  </div>
+  <div class="ab-body">
+    <p>Synthesise your research into <strong style="color:var(--text)">2–3 insights</strong> about the identity problem space. Each must point toward a specific product decision — not just describe the situation.</p>
+
+    <div class="schema">
+      <div class="schema-label">Section schema — repeat per insight</div>
+      <div class="schema-flow">
+        <div class="sf-node"><div class="sfn-lbl">Observation</div><div class="sfn-val">what you found from research</div></div>
+        <div class="sf-arr">+</div>
+        <div class="sf-node"><div class="sfn-lbl">Stakeholder</div><div class="sfn-val">who it applies to specifically</div></div>
+        <div class="sf-arr">→</div>
+        <div class="sf-node sf-result"><div class="sfn-lbl">This means…</div><div class="sfn-val">the product implication — one sentence</div></div>
+      </div>
+    </div>
+
+    <div class="ex-pair">
+      <div class="ex weak"><div class="ex-lbl">Weak</div><p>"Users don't trust AI agents because they can't verify who controls them."</p></div>
+      <div class="ex strong"><div class="ex-lbl">Stronger</div><p>"End users can't distinguish a brand's legitimate agent from an impersonator using the same name and logo — and they have no mechanism to check. This means the first valuable product output is not a full registry: it is a verification badge that brands can display and users can look up, with zero friction on the receiving end."</p></div>
+    </div>
+
+    <span class="len-tag">~half a page</span>
+  </div>
+</div>
+
+<!-- 2.2 -->
+<div class="ab">
+  <div class="ab-head">
+    <div class="ab-num" style="color:var(--accent2)">2.2</div>
+    <div class="ab-title">Value Proposition</div>
+  </div>
+  <div class="ab-body">
+    <p>Write <strong style="color:var(--text)">one value proposition sentence</strong> for the Agent Identity Platform, then two sentences connecting it to your problem statement and insights.</p>
+
+    <div class="tmpl">
+      <div class="tl">Template</div>
+      For <span class="fill">[target customer]</span>, who <span class="fill">[has this problem]</span>,<br>
+      <span class="fill">[product name]</span> is a <span class="fill">[category]</span> that <span class="fill">[key benefit]</span>.<br>
+      Unlike <span class="fill">[current alternative]</span>, it <span class="fill">[differentiator]</span>.
+    </div>
+
+    <div class="callout b" style="margin-top:12px">Consider carefully: is the primary customer the brand deploying the agent, the end user trusting it, or the channel operator filtering it? Your value prop will read very differently depending on which stakeholder you lead with.</div>
+    <span class="len-tag">~quarter page</span>
+  </div>
+</div>
+
+<!-- 2.3 -->
+<div class="ab">
+  <div class="ab-head">
+    <div class="ab-num" style="color:var(--accent2)">2.3</div>
+    <div class="ab-title">Product Definition</div>
+  </div>
+  <div class="ab-body">
+    <p>Define the product at a strategic level across four components. This is about the <strong style="color:var(--text)">what and why</strong> — not the feature detail.</p>
+
+    <div class="schema">
+      <div class="schema-label">Section schema — four components</div>
+      <div class="schema-grid">
+        <div class="sg-node" style="border-color:rgba(232,255,87,0.15)">
+          <div class="sgn-lbl" style="color:rgba(232,255,87,0.5)">Product Category</div>
+          <div class="sgn-desc">What type of product is this — a registry, a certification authority, a trust network, a platform, an open standard? This choice determines the business model, the governance structure, and who has authority over identity decisions.</div>
+        </div>
+        <div class="sg-node" style="border-color:rgba(87,200,255,0.15)">
+          <div class="sgn-lbl" style="color:rgba(87,200,255,0.5)">Primary Customer &amp; Scenario</div>
+          <div class="sgn-desc">Who is the first customer, and what problem do they solve on day one? Describe one concrete scenario — what the world looks like before and after they use this product.</div>
+        </div>
+        <div class="sg-node" style="border-color:rgba(181,123,255,0.15)">
+          <div class="sgn-lbl" style="color:rgba(181,123,255,0.5)">Identity Model</div>
+          <div class="sgn-desc">What IS an agent identity? What fields define it — what does a record contain? What makes an agent ID unique? How do you handle the same agent operating across multiple channels?</div>
+        </div>
+        <div class="sg-node" style="border-color:rgba(255,123,87,0.15)">
+          <div class="sgn-lbl" style="color:rgba(255,123,87,0.5)">Trust &amp; Security Model</div>
+          <div class="sgn-desc">How is legitimacy established — static verification or dynamic behaviour scoring? What distinguishes a legitimate agent from a spam agent, a bot, or an impersonator? What triggers investigation or revocation?</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout b" style="margin-top:12px">The Identity Model and Trust Model are the hardest and most important components. A registry without a clear trust model is just a list — it creates the appearance of verification without the substance.</div>
+    <span class="len-tag">~1 page</span>
+  </div>
+</div>
+
+<!-- 2.4 -->
+<div class="ab">
+  <div class="ab-head">
+    <div class="ab-num" style="color:var(--accent2)">2.4</div>
+    <div class="ab-title">Architectural Schema</div>
+  </div>
+  <div class="ab-body">
+    <p>Design your own simplified architectural schema of the Agent Identity Platform you are proposing. Use the reference architecture above as a starting point — adapt it to reflect your product decisions. You are not engineering the system; you are defining which components exist, how they connect, and what data flows between them.</p>
+    <p style="margin-top:6px">The schema can be hand-drawn and photographed, or made in Figma, Whimsical, draw.io, or any tool. It must be <strong style="color:var(--text)">annotated with PM decisions</strong> — not just a technical drawing.</p>
+
+    <div class="schema" style="margin-top:16px">
+      <div class="schema-label">Starter canvas — adapt and complete this</div>
+      <div class="id-canvas">
+
+        <div class="idc-row">
+          <div class="idc-box filled">🏢 Brand</div>
+          <div style="color:#333;font-size:13px">+</div>
+          <div class="idc-box filled">👤 Individual</div>
+          <div style="color:#333;font-size:13px">+</div>
+          <div class="idc-box filled">⚙️ Machine</div>
+        </div>
+        <div class="idc-conn">↓ register via</div>
+        <div class="idc-row">
+          <div class="idc-box pm-zone" style="font-style:normal;font-weight:700;color:rgba(232,255,87,0.7)">Registration &amp; Onboarding</div>
+        </div>
+        <div class="idc-conn">↓ creates record in</div>
+        <div class="idc-row">
+          <div class="idc-box pm-zone" style="font-style:normal">
+            <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(232,255,87,0.4);margin-bottom:6px;font-weight:800">Agent Identity Registry</div>
+            <div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap">
+              <span style="font-size:10px;color:rgba(232,255,87,0.4);background:rgba(232,255,87,0.06);border:1px solid rgba(232,255,87,0.12);border-radius:4px;padding:2px 7px">Agent ID</span>
+              <span style="font-size:10px;color:#555;background:#161616;border:1px dashed #2a2a2a;border-radius:4px;padding:2px 7px">+ your fields?</span>
+            </div>
+          </div>
+        </div>
+        <div class="idc-conn">↕ used by platform services</div>
+        <div class="idc-svc-row">
+          <div class="idc-svc chosen">Authentication<br><span style="font-size:9px;color:#666">include?</span></div>
+          <div class="idc-svc chosen">Validation<br><span style="font-size:9px;color:#666">include?</span></div>
+          <div class="idc-svc chosen">Threat Detection<br><span style="font-size:9px;color:#666">include?</span></div>
+          <div class="idc-svc chosen">Developer API<br><span style="font-size:9px;color:#666">include?</span></div>
+        </div>
+        <div class="idc-conn">↓ identity presented to channels</div>
+        <div class="idc-ch-row">
+          <div class="idc-ch">Chat Apps</div>
+          <div class="idc-ch">Web</div>
+          <div class="idc-ch">Voice</div>
+          <div class="idc-ch">Email</div>
+          <div class="idc-ch">APIs</div>
+        </div>
+        <div class="idc-caption">Mark which components you include (and which you defer). Define what data flows between them. Annotate your PM decisions directly on the diagram.</div>
+      </div>
+    </div>
+
+    <div class="deliv blue" style="margin-top:16px">
+      <div class="dl-label">Submit</div>
+      <ul>
+        <li>Your annotated architectural schema (image or embed)</li>
+        <li>4 PM decision bullets written below the diagram:</li>
+      </ul>
+      <ol style="margin-top:8px;padding-left:32px">
+        <li>Which platform components did you include in your first version — and which did you defer, and why?</li>
+        <li>What data does the Identity Registry store, and who has read/write access?</li>
+        <li>How does the trust or validation model work — what makes an agent "verified"?</li>
+        <li>One key governance or regulatory constraint the PM must resolve before launch.</li>
+      </ol>
+    </div>
+
+    <div class="callout b" style="margin-top:12px">Your schema must reflect your product decisions from 2.1–2.3. If your primary finding was about impersonation, your schema should show how the Validation Engine and Threat Detection connect to the Registry — not treat all four services as equal.</div>
+    <span class="len-tag">diagram + ~half a page</span>
+  </div>
+</div>
+
+<!-- 2.5 -->
+<div class="ab">
+  <div class="ab-head">
+    <div class="ab-num" style="color:var(--accent2)">2.5</div>
+    <div class="ab-title">Roadmap</div>
+  </div>
+  <div class="ab-body">
+    <p>Build a <strong style="color:var(--text)">three-horizon roadmap</strong> for the Agent Identity Platform. Identity platforms have strong network effects — the registry is only valuable when enough agents are registered. Your roadmap must reflect how you build supply (registered agents) and demand (channels that check identity) in parallel.</p>
+
+    <div class="schema">
+      <div class="schema-label">Section schema</div>
+      <div class="schema-roadmap">
+        <div class="sr-node" style="border-color:rgba(232,255,87,0.2)">
+          <div class="srn-horizon" style="color:var(--accent)">Now</div>
+          <div class="srn-time">0–3 months</div>
+          <div class="srn-desc" style="color:rgba(232,255,87,0.4)">What can a brand or developer do with this product on day one?</div>
+        </div>
+        <div class="sr-arr">→</div>
+        <div class="sr-node">
+          <div class="srn-horizon" style="color:var(--accent2)">Next</div>
+          <div class="srn-time">3–6 months</div>
+          <div class="srn-desc">What becomes possible once there's a critical mass of registered agents?</div>
+        </div>
+        <div class="sr-arr">→</div>
+        <div class="sr-node">
+          <div class="srn-horizon" style="color:var(--accent4)">Later</div>
+          <div class="srn-time">6–12 months</div>
+          <div class="srn-desc">What does the full platform enable once trust signals are accumulating over time?</div>
+        </div>
+      </div>
+      <div style="margin-top:7px;background:#161616;border:1px solid #252525;border-radius:7px;padding:10px 14px;font-size:11px;color:#555">
+        <span style="color:#444;font-weight:800;letter-spacing:1px;text-transform:uppercase;font-size:9px">Not building (1 item)  </span>One capability deliberately excluded from this 12-month window + 2-sentence justification
+      </div>
+    </div>
+
+    <div class="callout b" style="margin-top:12px">The chicken-and-egg problem is real: channels won't check agent identity if few agents are registered; brands won't register if no channels check. Your "Now" horizon must address which side you seed first and why.</div>
+    <span class="len-tag">~half a page</span>
+  </div>
+</div>
+
+<!-- ══════════ SUBMISSION ══════════ -->
+<hr class="divider">
+<div class="section">
+  <div class="label">Logistics</div>
+  <h3 style="font-size:20px;margin-bottom:16px">Format &amp; Submission</h3>
+  <div class="sub-tiles">
+    <div class="sub-tile"><div class="st-lbl">Accepted formats</div><div class="st-val" style="font-size:13px;line-height:1.8">PDF &nbsp;·&nbsp; PowerPoint &nbsp;·&nbsp; Word &nbsp;·&nbsp; HTML</div></div>
+    <div class="sub-tile"><div class="st-lbl">Length</div><div class="st-val">6–8 pages</div></div>
+    <div class="sub-tile"><div class="st-lbl">Submission</div><div class="st-val">Individual</div></div>
+  </div>
+</div>
+
+<!-- ══════════ QUICK REF ══════════ -->
+<div class="section">
+  <div class="label">Planning</div>
+  <h3 style="font-size:20px;margin-bottom:4px">Quick Reference</h3>
+  <p>Each section is self-contained — you can stop and resume between them.</p>
+
+  <table class="ref-table">
+    <thead><tr><th>Section</th><th>Key output</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1.1</strong> Context Research</td><td>2–3 annotated sources — what it is, what you found, implication for agent identity</td></tr>
+      <tr><td><strong>1.2</strong> Stakeholder Insight</td><td>1 real voice — quote, which stakeholder, what it reveals about trust or identity needs</td></tr>
+      <tr><td><strong>1.3</strong> Problem Statement</td><td>1 structured statement (user + goal + failure + root cause → consequence) + 2 follow-up questions</td></tr>
+      <tr><td><strong>2.1</strong> Key Insights</td><td>2–3 insight statements — observation + stakeholder → "This means…"</td></tr>
+      <tr><td><strong>2.2</strong> Value Proposition</td><td>1 sentence using the template + 2-sentence grounding in research</td></tr>
+      <tr><td><strong>2.3</strong> Product Definition</td><td>4 components: product category · primary customer &amp; scenario · identity model · trust &amp; security model</td></tr>
+      <tr><td><strong>2.4</strong> Architectural Schema</td><td>Annotated platform diagram + 4 PM decision bullets</td></tr>
+      <tr><td><strong>2.5</strong> Roadmap</td><td>3-horizon table addressing the network effect + 1 deliberate exclusion with justification</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  <span>Fundamentals of Product Management · FER Zagreb · 2026</span>
+  <span>Krešo Žmak · Hana Horvat Horetzcky</span>
+</div>
+
+</div><!-- /wrap -->
+</body>
+</html>
