@@ -9,8 +9,8 @@ How can a messaging channel tell whether an AI agent really speaks for a brand w
 A brand registers support agent **A-01** for its messaging account **M-01**. Suppose the agent starts a conversation to help a customer track an order. Its signed proof matches the registration and customer support is within its scope, so the channel lets the conversation through.
 
 <picture>
-  <source media="(max-width: 600px)" srcset="assets/agent-lifecycle-mobile.svg">
-  <img src="assets/agent-lifecycle.svg" alt="Two proposed channel checks for agent A-01 on account M-01. The channel allows the first support conversation and blocks the next one after it reads the revoked status.">
+  <source media="(max-width: 600px)" srcset="assets/channel-verification-mobile.svg">
+  <img src="assets/channel-verification.svg" alt="Two proposed channel checks for agent A-01 on account M-01. The channel allows the first support conversation and blocks the next one after it reads the revoked status.">
 </picture>
 
 I gave the agent a stable ID and designed the channel to check its authority again at the start of each conversation. If A-01 returns after its registration has been revoked, that check picks up the change and the channel blocks the new conversation. An operator reviewing A-01 can still trace both decisions in its history.
