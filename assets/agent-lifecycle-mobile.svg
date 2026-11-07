@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="324" viewBox="0 0 360 324" role="img" aria-labelledby="title desc" font-family="Arial, Helvetica, sans-serif">
+  <title id="title">Two conversations from agent A-01</title>
+  <desc id="desc">The Verification API checks the agent’s signed proof and current registry record. The channel allows the first conversation. Once the record is revoked, the channel blocks the next conversation from the same agent on account M-01.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M1 1L7 4L1 7" fill="none" stroke="#8497a9" />
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="360" height="324" rx="0" fill="#ffffff" />
+  <rect x="81" y="7" width="269" height="60" rx="10" fill="#f0f5fb" />
+  <path d="M-14 -8C-14 -15 14 -15 14 -8S-14 -1 -14 -8Z M-14 -8V10C-14 17 14 17 14 10V-8 M-14 1C-14 8 14 8 14 1" transform="translate(106 36) scale(0.78)" fill="#edf4fc" stroke="#295e9e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="132" y="32" text-anchor="start" font-size="17" fill="#1c324b" font-weight="600">Identity registry</text>
+  <text x="132" y="53" text-anchor="start" font-size="14" fill="#4b6076" font-weight="400">Verified brand · Account M-01</text>
+  <path d="M237 68V94" stroke="#8497a9" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="3 4" />
+  <path d="M-5 -13V-17M-6 -17H-4 M-14 -11H14Q18 -11 18 -7V10Q18 14 14 14H-14Q-18 14 -18 10V-7Q-18 -11 -14 -11Z M-8 -2V2M8 -2V2M-5 8H5" transform="translate(52 117) scale(0.9)" fill="#edf4fc" stroke="#295e9e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M0 -19Q9 -13 17 -12V0Q16 12 0 20Q-16 12 -17 0V-12Q-9 -13 0 -19Z M-8 0L-2 6L9 -6" transform="translate(237 117) scale(0.95)" fill="#edf4fc" stroke="#295e9e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M77 117H211" stroke="#8497a9" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <text x="143" y="106" text-anchor="middle" font-size="13" fill="#4b6076" font-weight="400">Signed proof</text>
+  <text x="52" y="156" text-anchor="middle" font-size="17" fill="#1c324b" font-weight="600">Agent A-01</text>
+  <text x="52" y="176" text-anchor="middle" font-size="13" fill="#4b6076" font-weight="400">Support agent</text>
+  <text x="237" y="156" text-anchor="middle" font-size="17" fill="#1c324b" font-weight="600">Verification API</text>
+  <text x="237" y="176" text-anchor="middle" font-size="13" fill="#4b6076" font-weight="400">Proof, binding, scope and status</text>
+  <path d="M237 185V196Q237 201 232 201H182" stroke="#8497a9" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="180" y="221" text-anchor="middle" font-size="15" fill="#1c324b" font-weight="600">Channel decision</text>
+  <path d="M180 228V233H90V245" stroke="#8497a9" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <path d="M180 233H270V245" stroke="#8497a9" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
+  <rect x="6" y="249" width="170" height="64" rx="10" fill="#eef7f4" />
+  <circle stroke-width="1.6" cx="26" cy="288" r="9" fill="none" stroke="#176553" />
+  <path d="M21 288l3 3 6 -6" stroke="#176553" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="18" y="266" text-anchor="start" font-size="13" fill="#4b6076" font-weight="400">First contact · Active</text>
+  <text x="42" y="294" text-anchor="start" font-size="17" fill="#176553" font-weight="600">Allow</text>
+  <rect x="184" y="249" width="170" height="64" rx="10" fill="#fbf1f2" />
+  <circle stroke-width="1.6" cx="204" cy="288" r="9" fill="none" stroke="#9a3943" />
+  <path d="M201 285l6 6m0 -6l-6 6" stroke="#9a3943" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="196" y="266" text-anchor="start" font-size="13" fill="#4b6076" font-weight="400">Next contact · Revoked</text>
+  <text x="220" y="294" text-anchor="start" font-size="17" fill="#9a3943" font-weight="600">Block</text>
+</svg>
