@@ -21,7 +21,7 @@ A support agent can prove which brand it represents and still give a customer a 
 ## Questions for the pilot partners
 
 - What evidence is enough to verify the principal, and what should the recipient understand when an agent appears as verified?
-- Who can revoke an Agent ID, and how quickly does the channel need to see that change?
+- Who can revoke an agent’s registration, and how quickly must the channel see that change?
 - Who reviews an appeal if a legitimate agent is blocked?
 - Which records can the channel access, and how long can it wait for a verification result?
 
