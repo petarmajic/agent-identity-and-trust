@@ -247,7 +247,7 @@ def draw_lifecycle(compact=False):
         decision(545, 185, 222, False)
 
     ET.indent(svg)
-    name = "agent-lifecycle-mobile.svg" if compact else "agent-lifecycle.svg"
+    name = "channel-verification-mobile.svg" if compact else "channel-verification.svg"
     ASSETS.mkdir(parents=True, exist_ok=True)
     (ASSETS / name).write_text(ET.tostring(svg, encoding="unicode") + "\n", encoding="utf-8")
 
