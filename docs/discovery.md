@@ -2,44 +2,28 @@
 
 [Overview](../README.md) · [Concept paper](product-concept.pdf)
 
-The assignment asks for product discovery followed by product definition: research the identity gap, identify a stakeholder's need, choose a specific failure and translate it into a product concept. I focused on the channel operator that must decide whether to accept an incoming agent interaction.
+I chose the messaging channel operator as the first customer because the operator has to make a decision at a specific moment. A support agent has started a conversation through a familiar business account. What evidence would let the operator accept it as the brand’s agent?
 
-## Research and product implications
+## What I took from the research
 
-| Research | Finding used in the case study | Product decision |
-| --- | --- | --- |
-| [NIST/NCCoE concept paper, February 2026](https://www.nccoe.nist.gov/sites/default/files/2026-02/accelerating-the-adoption-of-software-and-ai-agent-identity-and-authorization-concept-paper.pdf) | Agent identity involves identification, authentication, authority, delegation and audit. These require separate checks. | Keep persistent identity, credentials, authority and lifecycle status distinct in the product model. |
-| [OpenID Foundation white paper, October 2025](https://openid.net/wp-content/uploads/2025/10/Identity-Management-for-Agentic-AI.pdf) | An agent acting through a user's account can lose its own identity. Explicit delegation preserves the distinction between the agent and the party it represents. | Link agent and principal records while retaining both identities during verification. |
-| [GoDaddy ANS architecture](https://www.godaddy.com/resources/news/building-the-agent-name-service-using-a-one-system-approach) | DNS-based identity, certificates and a transparency log provide a basis for registration and lifecycle evidence. | Use registration as the source of identity evidence, then check that evidence against the active caller. |
-
-The common product question is how a channel can connect a presented Agent ID to a verified principal, a valid runtime credential and current lifecycle status. The resulting direction is a registry-backed verification service.
+| Source | Decision it informed |
+| --- | --- |
+| [NIST/NCCoE concept paper](https://www.nccoe.nist.gov/sites/default/files/2026-02/accelerating-the-adoption-of-software-and-ai-agent-identity-and-authorization-concept-paper.pdf) | I separated identity, credentials and authority. A channel should be able to recognise an agent and still deny a request outside its scope. |
+| [OpenID Foundation white paper](https://openid.net/wp-content/uploads/2025/10/Identity-Management-for-Agentic-AI.pdf) | I gave the agent its own identity and linked it to the party it represents. Both remain visible when the agent acts on someone’s behalf. |
+| [GoDaddy Agent Name Service architecture](https://www.godaddy.com/resources/news/building-the-agent-name-service-using-a-one-system-approach) | I used a registry to keep an agent’s identity and lifecycle history together. The caller would still have to present proof linked to that record. |
 
 ## Stakeholder insight
 
-I used a published statement from **Patrick Sullivan, Akamai's CTO for Security Strategy**, in the [December 2025 Akamai–Visa announcement](https://www.akamai.com/newsroom/press-release/2025/akamai-and-visa-join-forces-to-secure-the-next-era-of-agentic-commerce). His statement identifies a dual-identity requirement: recognising the agent and the party it acts for.
-
-My product implication was to carry the agent–principal relationship into the interaction itself. A name or previously issued registration record gives the channel less information than a current check of that relationship and its credentials.
-
-This is a public stakeholder statement from the commerce context. It supports the selected direction; channel-specific requirements still need direct validation.
+In a public announcement about agent-led commerce, Akamai’s Patrick Sullivan described the need to recognise both the agent and the party it represents. I carried that distinction into the messaging scenario. A channel might recognise the brand’s account and still have too little information to identify the agent using it. [Akamai and Visa announcement](https://www.akamai.com/newsroom/press-release/2025/akamai-and-visa-join-forces-to-secure-the-next-era-of-agentic-commerce).
 
 ## Problem statement
 
-**Channel operators trying to accept legitimate AI-agent traffic struggle to verify that an incoming caller is the registered agent of its claimed principal. Identity records, principal bindings and runtime authentication are fragmented across systems. This can block legitimate agents while allowing impersonators or unauthorised automation to reach users and protected services.**
+A channel operator can receive a request from an agent claiming to handle support for a brand. When the agent’s registration, credentials and approved account are checked in different places, the operator can block a legitimate agent or let an impersonator reach a customer.
 
-| Part | Selected focus |
-| --- | --- |
-| User | Communication channel operator. |
-| Goal | Accept legitimate agents while protecting users and downstream services. |
-| Failure | The channel cannot reliably verify the active agent and its relationship to the claimed principal at interaction time. |
-| Root cause | Fragmented identity, binding and authentication mechanisms. |
-| Consequence | Incorrect blocking, impersonation risk and unauthorised access. |
-
-**Authentication** is the first component to prioritise. Registration supplies the record; runtime authentication establishes whether the caller controls the corresponding credentials. Validation then checks status, channel binding and permitted scope.
+I prioritised authentication at conversation start. The signed proof would let the channel check the caller against the registered agent. The current record would then tell the channel whether that agent still has permission to use the account.
 
 ## Main assumption to validate
 
-Channel operators must be willing and technically able to consume interoperable identity evidence in their access decisions. This assumption determines whether channel-integrated verification is a viable first product.
-
-Further discovery needs to establish the claims each channel requires, the evidence needed for higher-risk interactions, issuer responsibilities and acceptable privacy, latency and integration constraints.
+The public statement came from commerce. I would validate the messaging use case directly with channel operators. Which claims do they need before accepting a support conversation? How quickly must a revocation reach their next decision? Their answers would shape both the Verification API and the pilot’s success criteria.
 
 [Product definition](product-definition.md) · [Roadmap](roadmap.md)

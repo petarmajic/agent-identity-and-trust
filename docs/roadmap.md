@@ -2,36 +2,27 @@
 
 [Overview](../README.md) · [Product definition](product-definition.md) · [Concept paper](product-concept.pdf)
 
-The proposed rollout starts with a **closed two-sided pilot**: one anchor channel and a small group of high-volume brands. Brands supply registered agents; the channel creates value by using their identity evidence in live access decisions. Both sides need to participate for the first version to be useful.
+I proposed recruiting one messaging channel and a small group of brands for the same pilot. A brand has little reason to register a support agent until a channel will recognise it. The channel needs registered agents before it can find out whether the identity check helps it make a decision.
 
 ## Three proposed horizons
 
-| Horizon | Supply: registered agents | Demand: channel adoption | Exit condition |
-| --- | --- | --- | --- |
-| **Now · 0–3 months** | Brands verify the organisation principal, register one agent, declare purpose and capabilities, bind an approved messaging account and manage runtime credentials. | One anchor channel integrates the Verification API and checks signed proof, binding, scope and lifecycle status before returning an allow/block decision. | Registered pilot agents are recognised reliably. Revoked identities no longer receive a verified result. |
-| **Next · 3–6 months** | More brands use repeatable onboarding, rotate credentials and add multiple bindings under the same Agent ID. | A second surface or partner checks the same identity. Abuse reporting, step-up approval and short-lived Authorisation Receipts support sensitive actions. | The same Agent ID works on more than one surface. Sensitive actions can be approved without broad standing access. |
-| **Later · 6–12 months** | Personal and machine-owned agents, delegation chains and a controlled federation pilot extend participation. | Messaging, web, voice and API channels reuse evidence. Review and suspension draw on lifecycle and abuse signals with limited disclosure of private data. | Multiple channels reuse identity evidence, and lifecycle events inform their decisions. |
+These time windows describe the plan I submitted. Each phase has a question the pilot partners would need to answer before expanding it.
 
-These are proposed release horizons and qualitative exit conditions. They define what each stage needs to establish before the scope expands.
+| Planned window | What changes | What the partners would look for |
+| --- | --- | --- |
+| 0–3 months | Each brand registers one support agent and binds it to one messaging account. The channel checks its proof, binding, scope and current status at conversation start. | Can the channel recognise an active registered agent and block a new conversation once it reads a revoked status? |
+| 3–6 months | Add repeatable onboarding, credential rotation, a second channel binding and abuse reporting. Introduce short-lived Authorisation Receipts for sensitive actions. | Can a second channel recognise the same Agent ID? Can the agent obtain approval for a single action such as a refund? |
+| 6–12 months | Extend the model to personal and machine-owned agents, delegation chains and a limited pilot with another issuer. | Can participating channels reuse identity evidence and act on lifecycle or abuse reports while limiting what they disclose? |
 
-## Why seed both sides together
+## Why I left out a universal trust score
 
-An unused registry gives brands little reason to register an agent. A verification integration gives a channel little value if it has no registered agents to recognise. The anchor channel and initial brands therefore form the same pilot rather than separate launches.
+A support agent can prove which brand it represents and still give a customer a poor answer. A single score would hide which of those questions the channel actually checked. I kept identity, authority and observed behaviour separate, especially while the pilot would have little comparable evidence across channels.
 
-The initial support-agent scenario keeps the first release focused: one type of principal, one messaging surface and a concrete verification decision. Additional bindings and sensitive-action approval follow once that path is established.
+## Questions for the pilot partners
 
-## Deliberate exclusion: a universal trust score
+- What evidence is enough to verify the principal, and what should the recipient understand when an agent appears as verified?
+- Who can revoke an Agent ID, and how quickly does the channel need to see that change?
+- Who reviews an appeal if a legitimate agent is blocked?
+- Which records can the channel access, and how long can it wait for a verification result?
 
-The first year excludes a single number that claims whether an agent is trustworthy. The concept expects too little comparable evidence across channels to support that claim. Combining verified identity, valid authority and safe behaviour into one score would also make the verification result harder to interpret.
-
-The product instead returns evidence tied to a particular agent, principal, channel and interaction. Behavioural signals can inform later decisions while those distinctions remain visible.
-
-## Decisions required before a pilot
-
-- Agree which evidence establishes a principal and which assurance levels the first channel accepts.
-- Define who can suspend or revoke an identity and how those changes reach channel decisions.
-- Set the meaning of the recipient-facing signal and the responsibility attached to it.
-- Establish appeals and correction procedures for incorrect verification or blocking.
-- Validate channel adoption, required claims, privacy constraints and acceptable integration latency.
-
-[Discovery assumptions](discovery.md#main-assumption-to-validate) · [First-version boundary](product-definition.md#first-version-boundary)
+[Discovery assumption](discovery.md#main-assumption-to-validate) · [First-version boundary](product-definition.md#first-version-boundary)
