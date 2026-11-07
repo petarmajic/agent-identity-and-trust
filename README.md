@@ -13,6 +13,8 @@ A brand registers support agent **A-01** for its messaging account **M-01**. Sup
   <img src="assets/channel-verification.svg" alt="Two proposed channel checks for agent A-01 on account M-01. The channel allows the first support conversation and blocks the next one after it reads the revoked status.">
 </picture>
 
+**Figure 1.** The channel allows A-01’s first conversation on account M-01 and blocks the next one after the agent’s registration is revoked.
+
 I gave the agent a stable ID and designed the channel to check its authority again at the start of each conversation. If A-01 returns after its registration has been revoked, that check picks up the change and the channel blocks the new conversation. An operator reviewing A-01 can still trace both decisions in its history.
 
 ## Where verification stops
